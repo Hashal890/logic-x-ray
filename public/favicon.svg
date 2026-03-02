@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d1b2"/>
+      <stop offset="100%" style="stop-color:#6366f1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded square -->
+  <rect width="32" height="32" rx="7" fill="url(#bg)"/>
+
+  <!-- Top node (entry/class — teal) -->
+  <rect x="11" y="3" width="10" height="6" rx="2" fill="none" stroke="#00d1b2" stroke-width="1.4"/>
+  <circle cx="16" cy="6" r="1" fill="#00d1b2"/>
+
+  <!-- Edge: top → middle-left -->
+  <line x1="13" y1="9" x2="9" y2="14" stroke="#334155" stroke-width="1.1"/>
+  <!-- Edge: top → middle-right -->
+  <line x1="19" y1="9" x2="23" y2="14" stroke="#334155" stroke-width="1.1"/>
+
+  <!-- Middle-left node (condition — amber diamond shape) -->
+  <polygon points="9,14 5,18 9,22 13,18" fill="none" stroke="#f59e0b" stroke-width="1.4"/>
+
+  <!-- Middle-right node (loop — green) -->
+  <rect x="18" y="14" width="10" height="7" rx="2" fill="none" stroke="#22c55e" stroke-width="1.4"/>
+  <!-- loop arrow inside -->
+  <path d="M21 16 Q23 15 25 16 Q26 18 25 20" fill="none" stroke="#22c55e" stroke-width="1" stroke-linecap="round"/>
+  <polyline points="24,19.5 25,20.5 26,19" fill="none" stroke="#22c55e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Edge: left-diamond → bottom node -->
+  <line x1="9" y1="22" x2="13" y2="26" stroke="#334155" stroke-width="1.1"/>
+  <!-- Edge: right-loop → bottom node -->
+  <line x1="22" y1="21" x2="18" y2="26" stroke="#334155" stroke-width="1.1"/>
+
+  <!-- Bottom node (return — pink pill) -->
+  <rect x="10" y="26" width="12" height="5" rx="2.5" fill="none" stroke="#f472b6" stroke-width="1.4"/>
+
+  <!-- Arrowheads on edges -->
+  <!-- top → left -->
+  <polyline points="8.2,13.2 9,14.2 10,13.4" fill="none" stroke="#334155" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- top → right -->
+  <polyline points="22,13.2 23,14.2 24,13.4" fill="none" stroke="#334155" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- left → bottom -->
+  <polyline points="12,25.2 13,26.2 14,25.4" fill="none" stroke="#334155" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- right → bottom -->
+  <polyline points="17,25.2 18,26.2 19,25.4" fill="none" stroke="#334155" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

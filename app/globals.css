@@ -1,0 +1,388 @@
+/* ─── Reset & Base ─────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#__next {
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+  overflow: hidden;
+}
+
+/* ─── ReactFlow Node Base ───────────────────────────────── */
+.react-flow__node {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  border: 1px solid #555;
+  padding: 10px;
+  text-align: center;
+}
+
+/* ─── Scrollbar (analysis panel) ───────────────────────── */
+.analysis-panel::-webkit-scrollbar {
+  width: 6px;
+}
+.analysis-panel::-webkit-scrollbar-track {
+  background: #111827;
+}
+.analysis-panel::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 3px;
+}
+.analysis-panel::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* ─── Layout ────────────────────────────────────────────── */
+.app-root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #111;
+}
+
+/* ─── Header ────────────────────────────────────────────── */
+.header {
+  height: 60px;
+  padding: 0 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #333;
+  background-color: #1a1a1a;
+  flex-shrink: 0;
+}
+
+.header h1 {
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: #00d1b2;
+}
+
+.header-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.indent-label {
+  color: #aaa;
+  font-size: 13px;
+}
+
+/* ─── Main content ──────────────────────────────────────── */
+.main-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ─── Editor pane ───────────────────────────────────────── */
+.editor-pane {
+  border-right: 1px solid #333;
+  flex-shrink: 0;
+}
+
+/* ─── Resize handle ─────────────────────────────────────── */
+.resize-handle {
+  width: 8px;
+  background: #333;
+  cursor: col-resize;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.resize-handle:hover {
+  background: #555;
+}
+
+/* ─── Flow pane ─────────────────────────────────────────── */
+.flow-pane {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ─── Analysis panel (overlay card) ────────────────────── */
+.analysis-panel {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 300px;
+  max-height: 78vh;
+  overflow-y: auto;
+  background: #1f2937;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #4b5563;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  color: #e2e8f0;
+  font-size: 14px;
+  z-index: 10;
+}
+
+.analysis-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.analysis-panel-header h3 {
+  color: #00d1b2;
+}
+
+.analysis-title {
+  color: #00d1b2;
+  margin: 0 0 8px;
+}
+
+.suggestions-title {
+  color: #fbbf24;
+  margin: 0 0 8px;
+}
+
+.suggestions-list {
+  padding-left: 20px;
+  list-style: none;
+  font-size: 13px;
+}
+
+.suggestions-list li {
+  margin-bottom: 6px;
+}
+
+.no-suggestions {
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+.ai-analysis-block {
+  margin-top: 16px;
+}
+
+.ai-analysis-content {
+  white-space: pre-wrap;
+  line-height: 1.5;
+  font-size: 13px;
+}
+
+.complexity-row {
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.complexity-low {
+  color: #22c55e;
+}
+.complexity-medium {
+  color: #f59e0b;
+}
+.complexity-high {
+  color: #ef4444;
+}
+
+/* ─── AI Analysis Markdown ──────────────────────────────── */
+.ai-body {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #e2e8f0;
+}
+.ai-body strong {
+  color: #fff;
+}
+
+.ai-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #00d1b2;
+  margin: 14px 0 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #2d3748;
+}
+
+.ai-bullet {
+  display: flex;
+  gap: 7px;
+  margin-bottom: 5px;
+  align-items: flex-start;
+}
+
+.ai-bullet-dot {
+  color: #00d1b2;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ─── Code block ────────────────────────────────────────── */
+.ai-code-block {
+  border: 1px solid #2d3748;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  background: #0d1117;
+}
+
+.ai-code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 12px;
+  background: #161b22;
+  border-bottom: 1px solid #2d3748;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.ai-code-header:hover {
+  background: #1c2433;
+}
+
+.ai-code-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e2e8f0;
+  font-family: "Fira Code", monospace;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ai-code-lang-badge {
+  font-size: 10px;
+  background: #2d3748;
+  color: #00d1b2;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ai-code-toggle {
+  font-size: 11px;
+  color: #6b7280;
+  background: none;
+  border: 1px solid #374151;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 2px 8px;
+  transition: all 0.15s;
+}
+
+.ai-code-toggle:hover {
+  color: #00d1b2;
+  border-color: #00d1b2;
+}
+
+.ai-code-body {
+  max-height: 320px;
+  overflow: auto;
+  transition: max-height 0.3s ease;
+}
+
+.ai-code-body.collapsed {
+  max-height: 0 !important;
+  overflow: hidden;
+}
+
+.ai-code-body pre {
+  margin: 0;
+  padding: 12px 14px;
+  font-size: 12px;
+  font-family: "Fira Code", monospace;
+  color: #e2e8f0;
+  white-space: pre;
+  line-height: 1.6;
+}
+
+/* ─── Error overlay ─────────────────────────────────────── */
+.error-overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background-color: rgba(255, 0, 0, 0.2);
+  color: #ff6b6b;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ff6b6b;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+  font-size: 14px;
+}
+
+.error-snippet {
+  background: #000;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin: 10px 0;
+}
+
+.error-hint {
+  color: #ccc;
+}
+
+/* ─── Buttons ───────────────────────────────────────────── */
+.btn {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.btn:hover:not(:disabled) {
+  background-color: #444;
+  border-color: #555;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: #00d1b2;
+  color: #111;
+  border: none;
+  font-weight: bold;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #00bfa2;
+}
+
+.btn-analyze {
+  background-color: #22c55e;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-analyze:hover:not(:disabled) {
+  background-color: #16a34a;
+}
+
+.btn-analyze:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
