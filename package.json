@@ -1,0 +1,27 @@
+{
+  "name": "logic-x-ray",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@huggingface/inference": "^4.13.14",
+    "@monaco-editor/react": "^4.7.0",
+    "acorn": "^8.16.0",
+    "autoprefixer": "^10.4.27",
+    "axios": "^1.13.6",
+    "js-beautify": "^1.15.4",
+    "next": "^14.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "react-select": "^5.10.2",
+    "reactflow": "^11.11.4"
+  },
+  "devDependencies": {
+    "@types/node": "25.3.3",
+    "typescript": "5.9.3"
+  }
+}
