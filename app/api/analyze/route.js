@@ -2,10 +2,23 @@ import { NextResponse } from "next/server";
 import { InferenceClient } from "@huggingface/inference";
 import { responseHasPlaceholderCode } from "../../../lib/parse-ai";
 
+// Round-robin across every distinct provider before any provider gets a
+// second turn — a single provider outage (or the account's shared credit
+// pool running dry on that provider's route) never costs more than one
+// hop at a given depth. Escalates from small/fast models toward larger
+// ones as the fallback gets deeper.
 const MODELS = [
   { provider: "novita", model: "meta-llama/Llama-3.1-8B-Instruct" },
-  { provider: "novita", model: "Qwen/Qwen2.5-72B-Instruct" },
+  { provider: "deepinfra", model: "meta-llama/Llama-3.1-8B-Instruct" },
+  { provider: "nscale", model: "meta-llama/Llama-3.1-8B-Instruct" },
+  { provider: "featherless-ai", model: "meta-llama/Llama-3.1-8B-Instruct" },
   { provider: "together", model: "meta-llama/Llama-3.3-70B-Instruct" },
+  { provider: "zai-org", model: "zai-org/GLM-4.5-Air" },
+  { provider: "novita", model: "Qwen/Qwen2.5-72B-Instruct" },
+  { provider: "deepinfra", model: "Qwen/Qwen2.5-72B-Instruct" },
+  { provider: "featherless-ai", model: "Qwen/Qwen2.5-72B-Instruct" },
+  { provider: "novita", model: "mistralai/Mistral-7B-Instruct-v0.3" },
+  { provider: "deepinfra", model: "deepseek-ai/DeepSeek-V3" },
 ];
 
 export async function POST(request) {

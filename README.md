@@ -89,13 +89,23 @@ When the heatmap is on, node background/border colour is overridden by nesting d
 
 ## AI models
 
-The "Analyze with AI" sidebar button calls Hugging Face's Inference API with a three-model fallback chain. If a provider is busy, fails, or hands back an abbreviated snippet instead of the full file it was asked for, the request moves on to the next model automatically — you only see a result once one comes back clean, or every option has been tried.
+The "Analyze with AI" sidebar button calls Hugging Face's Inference API with a fallback chain spanning six different providers. If one is busy, fails, or hands back an abbreviated snippet instead of the full file it was asked for, the request moves on to the next automatically. The chain round-robins across every provider before repeating any of them, so a single provider having a bad day never costs more than one hop at a given depth — then it escalates to larger models as the fallback gets deeper. You only see a result once one comes back clean, or every option has been tried.
 
-| Provider  | Model                             |
-| --------- | ---------------------------------- |
-| Novita    | meta-llama/Llama-3.1-8B-Instruct   |
-| Novita    | Qwen/Qwen2.5-72B-Instruct           |
-| Together  | meta-llama/Llama-3.3-70B-Instruct   |
+| Provider       | Model                              |
+| -------------- | ------------------------------------ |
+| Novita         | meta-llama/Llama-3.1-8B-Instruct     |
+| DeepInfra      | meta-llama/Llama-3.1-8B-Instruct     |
+| Nscale         | meta-llama/Llama-3.1-8B-Instruct     |
+| Featherless AI | meta-llama/Llama-3.1-8B-Instruct     |
+| Together       | meta-llama/Llama-3.3-70B-Instruct    |
+| Zai Org        | zai-org/GLM-4.5-Air                   |
+| Novita         | Qwen/Qwen2.5-72B-Instruct             |
+| DeepInfra      | Qwen/Qwen2.5-72B-Instruct             |
+| Featherless AI | Qwen/Qwen2.5-72B-Instruct             |
+| Novita         | mistralai/Mistral-7B-Instruct-v0.3    |
+| DeepInfra      | deepseek-ai/DeepSeek-V3                |
+
+Note that Hugging Face's free-tier inference credits are shared across every provider on the same account — if the account itself is out of credits, every entry in this chain fails with the same message no matter how many providers are listed. More providers protect against one of them having an outage, not against the account running dry; see the Troubleshooting section below.
 
 This is the one feature that leaves the browser — everything else (parsing, the flowchart, the heatmap, the simulator, editing) runs entirely client-side and needs no network access or API key.
 
