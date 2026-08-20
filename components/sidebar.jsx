@@ -1,9 +1,9 @@
 import AIRenderer from "./ai-renderer";
+import { depthColor } from "../lib/nodeStyles";
 
 const complexityColor = (n) =>
   n > 10 ? "#ef4444" : n > 5 ? "#f59e0b" : "#22c55e";
 
-// Small reusable section label
 const SectionLabel = ({ color = "#64748b", children }) => (
   <div
     style={{
@@ -19,7 +19,6 @@ const SectionLabel = ({ color = "#64748b", children }) => (
   </div>
 );
 
-// One row inside the complexity card
 function ComplexityRow({ label, value, source }) {
   const color = complexityColor(value);
   const tagColor = source === "ai" ? "#818cf8" : "#38bdf8";
@@ -60,7 +59,6 @@ function ComplexityRow({ label, value, source }) {
   );
 }
 
-// One suggestion item
 function SuggestionItem({ text, accentColor }) {
   return (
     <div
@@ -91,12 +89,20 @@ export default function Sidebar({
   isAnalyzing,
   onAnalyze,
   onInsert,
+  // heatmap / graph stats
+  nodes = [],
+  edges = [],
+  onJumpToNode,
 }) {
   const hasAiMeta = aiComplexity !== null && aiComplexity !== undefined;
   const hasAiSuggs = aiSuggestions?.length > 0;
 
-  // Show divider between complexity rows only when both exist
   const showDivider = hasAiMeta;
+
+  const hotspots = [...nodes]
+    .filter((n) => Number.isFinite(n.data?.depth) && n.data.depth >= 1)
+    .sort((a, b) => b.data.depth - a.data.depth)
+    .slice(0, 3);
 
   return (
     <div
@@ -111,7 +117,6 @@ export default function Sidebar({
         minHeight: 0,
       }}
     >
-      {/* ── Panel header ── */}
       <div
         style={{
           padding: "10px 14px",
@@ -122,16 +127,21 @@ export default function Sidebar({
           justifyContent: "space-between",
         }}
       >
-        <span
-          style={{
-            color: "#00d1b2",
-            fontWeight: 700,
-            fontSize: 13,
-            letterSpacing: 1,
-          }}
-        >
-          CODE ANALYSIS
-        </span>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+          <span
+            style={{
+              color: "#00d1b2",
+              fontWeight: 700,
+              fontSize: 13,
+              letterSpacing: 1,
+            }}
+          >
+            CODE ANALYSIS
+          </span>
+          <span style={{ color: "#475569", fontSize: 11 }}>
+            {nodes.length} nodes · {edges.length} edges
+          </span>
+        </div>
         <button
           onClick={onAnalyze}
           disabled={isAnalyzing}
@@ -151,7 +161,6 @@ export default function Sidebar({
         </button>
       </div>
 
-      {/* ── Scrollable body ── */}
       <div
         style={{
           flex: 1,
@@ -161,7 +170,6 @@ export default function Sidebar({
           minHeight: 0,
         }}
       >
-        {/* ── Complexity card ── */}
         <div
           style={{
             background: "#0f172a",
@@ -192,7 +200,6 @@ export default function Sidebar({
               Run "Analyze with AI" to see AI complexity
             </div>
           )}
-          {/* Divergence warning */}
           {hasAiMeta && Math.abs(complexity - aiComplexity) > 2 && (
             <div
               style={{
@@ -211,7 +218,63 @@ export default function Sidebar({
           )}
         </div>
 
-        {/* ── Static suggestions ── */}
+        {hotspots.length > 0 && (
+          <div style={{ marginBottom: 16 }}>
+            <SectionLabel color="#f59e0b">⚠ Complexity Hotspots</SectionLabel>
+            {hotspots.map((n) => {
+              const color = depthColor(n.data.depth);
+              return (
+                <div
+                  key={n.id}
+                  onClick={() => onJumpToNode?.(n)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 8,
+                    padding: "6px 8px",
+                    marginBottom: 4,
+                    borderRadius: 6,
+                    background: "#0f172a",
+                    border: "1px solid #1e293b",
+                    cursor: onJumpToNode ? "pointer" : "default",
+                  }}
+                >
+                  <span
+                    style={{
+                      color: "#cbd5e1",
+                      fontSize: 12,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {n.data.label}
+                  </span>
+                  <span
+                    style={{
+                      flexShrink: 0,
+                      fontSize: 10,
+                      fontWeight: 700,
+                      padding: "1px 7px",
+                      borderRadius: 10,
+                      background: `${color}22`,
+                      color,
+                      border: `1px solid ${color}`,
+                    }}
+                  >
+                    depth {n.data.depth}
+                  </span>
+                </div>
+              );
+            })}
+            <div style={{ fontSize: 11, color: "#334155", marginTop: 4 }}>
+              Tip: deeply nested blocks are harder to test — consider
+              extracting them into named functions.
+            </div>
+          </div>
+        )}
+
         {suggestions.length > 0 && (
           <div style={{ marginBottom: 16 }}>
             <SectionLabel color="#38bdf8">⚙ Static Suggestions</SectionLabel>
@@ -221,7 +284,6 @@ export default function Sidebar({
           </div>
         )}
 
-        {/* ── AI suggestions (extracted from response) ── */}
         {hasAiSuggs && (
           <div style={{ marginBottom: 16 }}>
             <SectionLabel color="#818cf8">✦ AI Suggestions</SectionLabel>
@@ -231,7 +293,6 @@ export default function Sidebar({
           </div>
         )}
 
-        {/* ── Full AI analysis ── */}
         {aiAnalysis && (
           <>
             <div

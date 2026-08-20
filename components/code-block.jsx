@@ -10,7 +10,6 @@ const btnBase = {
   transition: "all .15s",
 };
 
-// Renders a single AI-generated code snippet with Insert / Copy / Collapse controls
 export default function CodeBlock({ lang, content, index, onInsert }) {
   const [open, setOpen] = useState(true);
   const [copied, setCopied] = useState(false);
@@ -30,7 +29,6 @@ export default function CodeBlock({ lang, content, index, onInsert }) {
         marginBottom: 12,
       }}
     >
-      {/* Header */}
       <div
         style={{
           display: "flex",
@@ -68,7 +66,6 @@ export default function CodeBlock({ lang, content, index, onInsert }) {
         </span>
         <div style={{ flex: 1 }} />
 
-        {/* Insert */}
         <button
           onClick={() => onInsert(content)}
           title="Insert into editor"
@@ -84,7 +81,6 @@ export default function CodeBlock({ lang, content, index, onInsert }) {
           ↙ Insert
         </button>
 
-        {/* Copy */}
         <button
           onClick={handleCopy}
           title="Copy to clipboard"
@@ -104,7 +100,6 @@ export default function CodeBlock({ lang, content, index, onInsert }) {
           {copied ? "✓ Copied" : "⎘ Copy"}
         </button>
 
-        {/* Collapse */}
         <button
           onClick={() => setOpen((o) => !o)}
           title={open ? "Collapse" : "Expand"}
@@ -127,7 +122,6 @@ export default function CodeBlock({ lang, content, index, onInsert }) {
         </button>
       </div>
 
-      {/* Code body */}
       {open && (
         <div
           style={{ overflowX: "auto", maxHeight: 320, background: "#020617" }}

@@ -1,4 +1,3 @@
-// Renders plain-text AI response segments cleanly
 export default function TextSegment({ content }) {
   const lines = content.split("\n");
   const out = [];
@@ -7,12 +6,8 @@ export default function TextSegment({ content }) {
     const raw = lines[i];
     const t = raw.trim();
 
-    // Skip empty lines — spacing is handled by margins, not blank lines
     if (!t) continue;
 
-    // ── Strip markdown headings (###, ##, #) ──────────────────────────
-    // These come through from AI responses and should be rendered as
-    // styled labels, not shown as raw "### text"
     const headingMatch = t.match(/^#{1,3}\s+(.+)/);
     if (headingMatch) {
       out.push(
@@ -33,7 +28,6 @@ export default function TextSegment({ content }) {
       continue;
     }
 
-    // ── Bold-only lines → section subheading ─────────────────────────
     if (/^\*\*[^*]{2,60}\*\*:?$/.test(t)) {
       out.push(
         <div
@@ -56,7 +50,6 @@ export default function TextSegment({ content }) {
       continue;
     }
 
-    // ── List items ────────────────────────────────────────────────────
     if (/^(\d+\.|[-•*])/.test(t)) {
       const text = t.replace(/^(\d+\.|[-•*])\s*/, "");
       const parts = renderBold(text);
@@ -88,7 +81,6 @@ export default function TextSegment({ content }) {
       continue;
     }
 
-    // ── Regular paragraph line ────────────────────────────────────────
     const parts = renderBold(t);
     out.push(
       <div
@@ -108,7 +100,6 @@ export default function TextSegment({ content }) {
   return <div style={{ marginBottom: 4 }}>{out}</div>;
 }
 
-// Inline bold: **text** → <strong>
 function renderBold(text) {
   return text.split(/(\*\*[^*]+\*\*)/).map((p, i) =>
     p.startsWith("**") && p.endsWith("**") ? (

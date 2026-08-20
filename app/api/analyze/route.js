@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 import { InferenceClient } from "@huggingface/inference";
+import { responseHasPlaceholderCode } from "../../../lib/parse-ai";
 
 const MODELS = [
   { provider: "novita", model: "meta-llama/Llama-3.1-8B-Instruct" },
   { provider: "novita", model: "Qwen/Qwen2.5-72B-Instruct" },
-  { provider: "sambanova", model: "Meta-Llama-3.1-8B-Instruct" },
-  { provider: "together", model: "meta-llama/Llama-3.2-3B-Instruct-Turbo" },
-  { provider: "together", model: "Qwen/Qwen2.5-7B-Instruct-Turbo" },
+  { provider: "together", model: "meta-llama/Llama-3.3-70B-Instruct" },
 ];
 
 export async function POST(request) {
@@ -29,6 +28,12 @@ export async function POST(request) {
       );
     }
 
+    // A model returning *something* isn't enough — smaller models often
+    // abbreviate code with placeholders despite being told not to. Keep the
+    // first placeholder-free response, but hang onto the best abbreviated
+    // one too in case every model flakes, rather than failing outright.
+    let fallback = null;
+
     for (const { provider, model } of MODELS) {
       try {
         console.log(`[analyze] Trying provider=${provider} model=${model}`);
@@ -39,23 +44,41 @@ export async function POST(request) {
           provider,
           model,
           messages: [{ role: "user", content: prompt }],
-          max_tokens: 1500,
+          max_tokens: 3000,
           temperature: 0.25,
         });
 
         const text = result.choices?.[0]?.message?.content?.trim();
 
         if (text && text.length > 20) {
+          if (!responseHasPlaceholderCode(text)) {
+            console.log(
+              `[analyze] ✅ Success — provider=${provider} model=${model}`,
+            );
+            return NextResponse.json({ result: text, provider, model });
+          }
           console.log(
-            `[analyze] ✅ Success — provider=${provider} model=${model}`,
+            `[analyze] ⚠️ ${provider}/${model} returned placeholder code, trying next model`,
           );
-          return NextResponse.json({ result: text, provider, model });
+          if (!fallback) fallback = { text, provider, model };
+          continue;
         }
 
         console.log(`[analyze] Empty response from ${provider}/${model}`);
       } catch (err) {
         console.log(`[analyze] ❌ ${provider}/${model} → ${err.message}`);
       }
+    }
+
+    if (fallback) {
+      console.log(
+        `[analyze] All models had placeholder code — returning best-effort from ${fallback.provider}/${fallback.model}`,
+      );
+      return NextResponse.json({
+        result: fallback.text,
+        provider: fallback.provider,
+        model: fallback.model,
+      });
     }
 
     return NextResponse.json(
