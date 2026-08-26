@@ -1,6 +1,6 @@
 # Logic-X-Ray
 
-Ever looked at a piece of code and thought "what is actually happening here?" Logic-X-Ray turns your code into a live, **editable** interactive flowchart — not a static diagram, a real interface you can read, click, drag, and run.
+Ever looked at a piece of code and thought "what is actually happening here?" Logic-X-Ray turns your code into a live, **editable** interactive flowchart — not a static diagram, a real interface you can read, click, drag and run.
 
 ![Version](https://img.shields.io/badge/version-2.0.0-00d1b2)
 ![Next.js](https://img.shields.io/badge/Next.js-16-black)
@@ -12,9 +12,9 @@ Ever looked at a piece of code and thought "what is actually happening here?" Lo
 
 Most AI code-explainer tools (ChatGPT, Claude, Gemini, NotebookLM, ...) generate a diagram or explanation from your code and stop there. Logic-X-Ray is built around four things none of them do:
 
-1. **The flowchart edits the code, and the code edits the flowchart.** Click a node to jump the editor to that line. Delete or comment a node and the source updates. Drag a node onto a sibling and their source lines swap. Type in the editor and the diagram re-parses live. It's bidirectional and instant, not one-way.
+1. **The flowchart edits the code and the code edits the flowchart.** Click a node to jump the editor to that line. Delete or comment a node and the source updates. Drag a node onto a sibling and their source lines swap. Type in the editor and the diagram re-parses live. It's bidirectional and instant, not one-way.
 2. **The complexity heatmap is always on.** Every node is colored by nesting depth (blue → amber → red) the moment the flowchart appears — no "analyze" button, no waiting on an LLM. Deeply nested code glows and pulses so hotspots are obvious at a glance.
-3. **You can run the code, without running it.** The Visual Dry-Run Simulator walks the flowchart step by step, pausing at every branch so *you* choose which path executes, animating the traversed route in green — and now tracks simple variable values live as you step, so you can watch a loop counter or accumulator change in real time (see below).
+3. **You can run the code, without running it.** The Visual Dry-Run Simulator walks the flowchart step by step, pausing at every branch so _you_ choose which path executes, animating the traversed route in green — and now tracks simple variable values live as you step, so you can watch a loop counter or accumulator change in real time (see below).
 4. **Every diagram is deterministic.** Parsing is done by real [Tree-Sitter](https://tree-sitter.github.io/tree-sitter/) grammars compiled to WebAssembly, not an LLM. The same code always produces the exact same flowchart — no hallucination, no variance between runs.
 
 ---
@@ -44,25 +44,25 @@ Every node is colored by nesting depth the instant the flowchart renders:
 - **▶ Start / ⏸ Pause / ▶ Resume / ▷ Step / ■ Stop**, plus a live speed control (0.2s–10s per step)
 - The active node glows yellow; when execution reaches a branch (`if`, loop, `try`/`catch`) with more than one path, the candidate nodes glow purple and **the simulator pauses** — click whichever path you want to take
 - Traversed edges animate green so you can see the exact path taken
-- **Live variable panel**: as the simulator steps past a simple assignment (`x = 5`, `total += 1`, `i++`, ...) it tracks the resulting value and shows it in a small panel next to the step counter. This is a deliberately conservative evaluator — it resolves literals, identifiers, and basic arithmetic/comparisons over values it already knows, and shows `?` rather than guessing when a value comes from a function call, member access, or anything else it can't honestly resolve. It is not a full interpreter, and doesn't pretend to be one.
+- **Live variable panel**: as the simulator steps past a simple assignment (`x = 5`, `total += 1`, `i++`, ...) it tracks the resulting value and shows it in a small panel next to the step counter. This is a deliberately conservative evaluator — it resolves literals, identifiers and basic arithmetic/comparisons over values it already knows and shows `?` rather than guessing when a value comes from a function call, member access, or anything else it can't honestly resolve. It is not a full interpreter and doesn't pretend to be one.
 
 ### 4. Deterministic Parsing (Tree-Sitter, no hallucination)
 
-All 7 languages are parsed by real Tree-Sitter grammars running as WebAssembly in the browser — the same engine that powers GitHub's code navigation and most modern editors' syntax highlighting. Parsing is a pure structural walk of the syntax tree, not a language model, so the same input always produces the same output. Every language's parser walks the *entire* tree — nothing is silently skipped; any construct a language module doesn't explicitly recognize still gets a generic node rather than vanishing.
+All 7 languages are parsed by real Tree-Sitter grammars running as WebAssembly in the browser — the same engine that powers GitHub's code navigation and most modern editors' syntax highlighting. Parsing is a pure structural walk of the syntax tree, not a language model, so the same input always produces the same output. Every language's parser walks the _entire_ tree — nothing is silently skipped; any construct a language module doesn't explicitly recognize still gets a generic node rather than vanishing.
 
 ---
 
 ## Languages and what gets visualised
 
-| Language   | What shows in the flowchart                                                                                           |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Language   | What shows in the flowchart                                                                                                       |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | JavaScript | Classes, private fields, arrow functions, async/generator functions, destructuring, labeled statements, JSX, all loops/conditions |
-| TypeScript | Everything in JS plus interfaces, type aliases, enums, namespaces, decorators, abstract classes, `import =`/`export =`  |
-| Python     | Classes, decorators, async/await, `match`/`case`, comprehensions, context managers, exception handling                  |
-| Java       | Classes, records, enums, annotations, sealed types, switch expressions, try-with-resources, synchronized blocks         |
-| PHP        | Classes, traits, interfaces, match expressions, arrow functions, closures, attributes, namespaces                       |
-| C          | Structs, unions, enums, preprocessor conditionals, typedefs, function pointers                                          |
-| C++        | Everything in C plus namespaces, templates, classes, access specifiers, try/catch, range-based for                      |
+| TypeScript | Everything in JS plus interfaces, type aliases, enums, namespaces, decorators, abstract classes, `import =`/`export =`            |
+| Python     | Classes, decorators, async/await, `match`/`case`, comprehensions, context managers, exception handling                            |
+| Java       | Classes, records, enums, annotations, sealed types, switch expressions, try-with-resources, synchronized blocks                   |
+| PHP        | Classes, traits, interfaces, match expressions, arrow functions, closures, attributes, namespaces                                 |
+| C          | Structs, unions, enums, preprocessor conditionals, typedefs, function pointers                                                    |
+| C++        | Everything in C plus namespaces, templates, classes, access specifiers, try/catch, range-based for                                |
 
 ---
 
@@ -70,18 +70,18 @@ All 7 languages are parsed by real Tree-Sitter grammars running as WebAssembly i
 
 Every node type has a distinct colour so you can scan the flowchart at a glance:
 
-| Node          | Colour        | Represents                                                          |
-| ------------- | ------------- | -------------------------------------------------------------------- |
-| ◈ Class       | Indigo        | class, interface, abstract class, enum, struct, trait, record       |
-| ƒ Function    | Teal          | functions, methods, constructors, arrow functions, lambdas          |
-| ↺ Loop        | Green         | for, while, do-while, foreach, for-of, for-in, range-based for      |
-| ◇ Condition   | Amber         | if/else, switch/case, match                                         |
-| ⚠ Try/Catch   | Red dashed    | try, catch, finally, with, synchronized                             |
-| ↓ Import      | Slate         | import, #include, use, require, namespace                           |
-| ↑ Export      | Muted         | export, export default, export *                                    |
-| ⏎ Return      | Pink          | return, throw, break, continue, yield, goto                         |
-| ▪ Variable    | Dark          | assignments, declarations, increments — anything tracked by the simulator's variable panel |
-| • Statement   | Dark, dotted  | anything else — preprocessor directives, bare expressions, or any construct without a more specific type. This is the catch-all that guarantees no line is ever silently dropped from the diagram. |
+| Node        | Colour       | Represents                                                                                                                                                                                         |
+| ----------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ◈ Class     | Indigo       | class, interface, abstract class, enum, struct, trait, record                                                                                                                                      |
+| ƒ Function  | Teal         | functions, methods, constructors, arrow functions, lambdas                                                                                                                                         |
+| ↺ Loop      | Green        | for, while, do-while, foreach, for-of, for-in, range-based for                                                                                                                                     |
+| ◇ Condition | Amber        | if/else, switch/case, match                                                                                                                                                                        |
+| ⚠ Try/Catch | Red dashed   | try, catch, finally, with, synchronized                                                                                                                                                            |
+| ↓ Import    | Slate        | import, #include, use, require, namespace                                                                                                                                                          |
+| ↑ Export    | Muted        | export, export default, export \*                                                                                                                                                                  |
+| ⏎ Return    | Pink         | return, throw, break, continue, yield, goto                                                                                                                                                        |
+| ▪ Variable  | Dark         | assignments, declarations, increments — anything tracked by the simulator's variable panel                                                                                                         |
+| • Statement | Dark, dotted | anything else — preprocessor directives, bare expressions, or any construct without a more specific type. This is the catch-all that guarantees no line is ever silently dropped from the diagram. |
 
 When the heatmap is on, node background/border colour is overridden by nesting depth instead of type — the icon still tells you what kind of node it is.
 
@@ -92,18 +92,18 @@ When the heatmap is on, node background/border colour is overridden by nesting d
 The "Analyze with AI" sidebar button calls Hugging Face's Inference API with a fallback chain spanning six different providers. If one is busy, fails, or hands back an abbreviated snippet instead of the full file it was asked for, the request moves on to the next automatically. The chain round-robins across every provider before repeating any of them, so a single provider having a bad day never costs more than one hop at a given depth — then it escalates to larger models as the fallback gets deeper. You only see a result once one comes back clean, or every option has been tried.
 
 | Provider       | Model                              |
-| -------------- | ------------------------------------ |
-| Novita         | meta-llama/Llama-3.1-8B-Instruct     |
-| DeepInfra      | meta-llama/Llama-3.1-8B-Instruct     |
-| Nscale         | meta-llama/Llama-3.1-8B-Instruct     |
-| Featherless AI | meta-llama/Llama-3.1-8B-Instruct     |
-| Together       | meta-llama/Llama-3.3-70B-Instruct    |
-| Zai Org        | zai-org/GLM-4.5-Air                   |
-| Novita         | Qwen/Qwen2.5-72B-Instruct             |
-| DeepInfra      | Qwen/Qwen2.5-72B-Instruct             |
-| Featherless AI | Qwen/Qwen2.5-72B-Instruct             |
-| Novita         | mistralai/Mistral-7B-Instruct-v0.3    |
-| DeepInfra      | deepseek-ai/DeepSeek-V3                |
+| -------------- | ---------------------------------- |
+| Novita         | meta-llama/Llama-3.1-8B-Instruct   |
+| DeepInfra      | meta-llama/Llama-3.1-8B-Instruct   |
+| Nscale         | meta-llama/Llama-3.1-8B-Instruct   |
+| Featherless AI | meta-llama/Llama-3.1-8B-Instruct   |
+| Together       | meta-llama/Llama-3.3-70B-Instruct  |
+| Zai Org        | zai-org/GLM-4.5-Air                |
+| Novita         | Qwen/Qwen2.5-72B-Instruct          |
+| DeepInfra      | Qwen/Qwen2.5-72B-Instruct          |
+| Featherless AI | Qwen/Qwen2.5-72B-Instruct          |
+| Novita         | mistralai/Mistral-7B-Instruct-v0.3 |
+| DeepInfra      | deepseek-ai/DeepSeek-V3            |
 
 Note that Hugging Face's free-tier inference credits are shared across every provider on the same account — if the account itself is out of credits, every entry in this chain fails with the same message no matter how many providers are listed. More providers protect against one of them having an outage, not against the account running dry; see the Troubleshooting section below.
 
@@ -260,7 +260,7 @@ On by default — click "🔥 Heatmap" in the header to turn per-depth coloring 
 Click "▶ Start Simulation." Use Pause/Resume/Step/Stop and the speed field to control playback. When execution reaches a branch, click whichever highlighted node you want to take. Watch the Variables panel (top-left of the canvas) for any values the simulator could resolve as you step.
 
 **Export or share**
-"⬇ PNG"/"⬇ SVG" download the current flowchart as an image. "🔗 Share" copies a link that reproduces your exact code, language, and indent setting for anyone who opens it.
+"⬇ PNG"/"⬇ SVG" download the current flowchart as an image. "🔗 Share" copies a link that reproduces your exact code, language and indent setting for anyone who opens it.
 
 **Format your code**
 Click Format Code to auto-format. Choose your preferred indent size (2/4/6/8 spaces or tabs) from the dropdown next to it.
@@ -269,7 +269,7 @@ Click Format Code to auto-format. Choose your preferred indent size (2/4/6/8 spa
 Reset to Original rolls the editor back to what the code looked like before your first edit, mutation, or AI insert this session.
 
 **Run AI analysis**
-Click Analyze with AI in the top-right of the sidebar. The AI returns a complexity score, specific suggestions, and two improved versions of your code, each with a one-click Insert button. If a version comes back looking like a partial snippet rather than the full file, Insert will ask you to confirm before replacing your code.
+Click Analyze with AI in the top-right of the sidebar. The AI returns a complexity score, specific suggestions and two improved versions of your code, each with a one-click Insert button. If a version comes back looking like a partial snippet rather than the full file, Insert will ask you to confirm before replacing your code.
 
 ---
 
@@ -302,21 +302,21 @@ vercel --prod
 ## Environment variables
 
 | Variable   | Required             | Purpose                                       |
-| ---------- | --------------------- | ---------------------------------------------- |
-| `HF_TOKEN` | Only for AI features  | Authenticates with Hugging Face Inference API   |
+| ---------- | -------------------- | --------------------------------------------- |
+| `HF_TOKEN` | Only for AI features | Authenticates with Hugging Face Inference API |
 
 ---
 
 ## Known limitations
 
 **Variable panel is intentionally conservative**
-It resolves literals, known identifiers, and simple arithmetic/comparisons — not function calls, member/index access, string interpolation, or anything language-specific. Unresolvable values show as `?` rather than a guess. This is a deliberate scope decision, not a bug: a wrong guess would be worse than an honest unknown.
+It resolves literals, known identifiers and simple arithmetic/comparisons — not function calls, member/index access, string interpolation, or anything language-specific. Unresolvable values show as `?` rather than a guess. This is a deliberate scope decision, not a bug: a wrong guess would be worse than an honest unknown.
 
 **Move only swaps siblings**
 Dragging a node onto another reorders two same-level, non-overlapping source blocks. You can't drag a node into an arbitrary new position or into a different container — the mutation is rejected safely (no source corruption) rather than attempted.
 
 **Python dynamic features**
-Only statically visible code is parsed. Dynamically created classes, runtime-generated functions, and heavy metaprogramming won't appear in the flowchart — this is inherent to any static-analysis tool, not specific to this parser.
+Only statically visible code is parsed. Dynamically created classes, runtime-generated functions and heavy metaprogramming won't appear in the flowchart — this is inherent to any static-analysis tool, not specific to this parser.
 
 **No persistent storage**
 Nothing is saved server-side. The Share link encodes your code directly in the URL, so very large files produce a very long link.
@@ -325,18 +325,18 @@ Nothing is saved server-side. The Share link encodes your code directly in the U
 
 ## Tech stack
 
-| What              | Package                |
-| ----------------- | ------------------------ |
-| Framework         | Next.js 16                |
-| Editor            | @monaco-editor/react       |
-| Flowchart         | reactflow                  |
-| Parsing (all 7 languages) | web-tree-sitter (WASM)  |
-| AI client         | @huggingface/inference      |
-| Code formatting   | js-beautify                 |
-| Image export      | html-to-image                |
-| Dropdowns         | react-select                  |
-| Testing           | vitest                          |
-| Hosting           | Vercel                            |
+| What                      | Package                |
+| ------------------------- | ---------------------- |
+| Framework                 | Next.js 16             |
+| Editor                    | @monaco-editor/react   |
+| Flowchart                 | reactflow              |
+| Parsing (all 7 languages) | web-tree-sitter (WASM) |
+| AI client                 | @huggingface/inference |
+| Code formatting           | js-beautify            |
+| Image export              | html-to-image          |
+| Dropdowns                 | react-select           |
+| Testing                   | vitest                 |
+| Hosting                   | Vercel                 |
 
 ---
 
@@ -346,7 +346,7 @@ Nothing is saved server-side. The Share link encodes your code directly in the U
 A red error box at the bottom of the canvas points to the line causing the problem. Fix the syntax and the flowchart updates automatically.
 
 **AI button shows "All models are currently busy"**
-Usually the Hugging Face providers are just overloaded — wait a few seconds and try again. If it keeps happening on every attempt, check your Hugging Face account: free-tier inference credits reset monthly, and once they're used up every provider fails with this same message until the reset (or until you add credits).
+Usually the Hugging Face providers are just overloaded — wait a few seconds and try again. If it keeps happening on every attempt, check your Hugging Face account: free-tier inference credits reset monthly and once they're used up every provider fails with this same message until the reset (or until you add credits).
 
 **AI button does nothing**
 Check that `HF_TOKEN` is in your `.env.local` file and restart the dev server after adding it (`Ctrl+C` then `npm run dev`).
@@ -361,4 +361,4 @@ That's expected for anything the evaluator can't safely resolve (a function call
 
 ## License
 
-MIT — free to use, modify, and distribute.
+MIT — free to use, modify and distribute.
