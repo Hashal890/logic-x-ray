@@ -106,7 +106,7 @@ export default function App() {
     [nodes, showToast],
   );
 
-  const [minimapOn, setMinimapOn] = useState(false);
+  const [minimapOn, setMinimapOn] = useState(true);
 
   // always-on by default — this is meant to be ambient structural feedback,
   // not an on-demand analysis step; users can still switch it off
